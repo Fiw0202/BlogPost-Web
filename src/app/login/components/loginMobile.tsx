@@ -31,7 +31,7 @@ const LoginMobile = () => {
     try {
       const resp = await login(userName);
       if (resp.statusCode === 200) {
-        localStorage.setItem("userName", resp.result.userId);
+        localStorage.setItem("userId", resp.result.userId);
         localStorage.setItem("token", resp.result.token);
         setAlertMsg("Success");
         setSnackbarOn(true);
