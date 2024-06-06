@@ -55,8 +55,8 @@ const NavItem = ({ item, level, pathDirect }: ItemType) => {
       color: theme.palette.text.secondary,
       paddingLeft: "10px",
       "&:hover": {
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.primary.dark,
+        color: theme.palette.primary.contrastText,
       },
       "&.Mui-selected": {
         color: "white",
