@@ -1,7 +1,16 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import theme from "@/utils/theme";
 import Image from "next/image";
 
@@ -9,7 +18,33 @@ import Image from "next/image";
 import LoginImage from "../../../../public/images/Login-image.png";
 import LoginWrapper from "./loginWrapper";
 
+//service
+import { login } from "@/utils/service/login";
+
 const LoginDesktop = () => {
+  const router = useRouter();
+  const [userName, setUserName] = useState<string>("");
+  const [snackBarOn, setSnackbarOn] = useState<boolean>(false);
+  const [alertMsg, setAlertMsg] = useState<string>("");
+
+  const Login = async () => {
+    try {
+      const resp = await login(userName);
+      if (resp.statusCode === 200) {
+        localStorage.setItem("userName", resp.result.userId);
+        localStorage.setItem("token", resp.result.token);
+        setAlertMsg("Success");
+        setSnackbarOn(true);
+        router.push("/");
+      } else {
+        setAlertMsg(resp.statusText);
+        setSnackbarOn(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <LoginWrapper>
       <Grid
@@ -48,6 +83,7 @@ const LoginDesktop = () => {
                     color: theme.palette.primary.contrastText,
                   },
                 }}
+                onChange={(e) => setUserName(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -61,6 +97,7 @@ const LoginDesktop = () => {
                     color: theme.palette.text.primary,
                   },
                 }}
+                onClick={Login}
               >
                 <Typography
                   color={theme.palette.primary.contrastText}
@@ -109,6 +146,20 @@ const LoginDesktop = () => {
           </Box>
         </Grid>
       </Grid>
+
+      {/*=== Alert ====*/}
+      <Snackbar
+        open={snackBarOn}
+        autoHideDuration={2000}
+        onClose={() => setSnackbarOn(!snackBarOn)}
+      >
+        <Alert
+          variant="filled"
+          severity={alertMsg === "Success" ? "success" : "error"}
+        >
+          {alertMsg}
+        </Alert>
+      </Snackbar>
     </LoginWrapper>
   );
 };
