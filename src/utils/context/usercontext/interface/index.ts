@@ -1,7 +1,7 @@
 export interface IUserData {
-  id: "";
-  userName: "";
-  firstName: "";
-  lastName: "";
-  displayName: "";
+  id: string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  displayName: string;
 }
