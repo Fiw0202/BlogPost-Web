@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { BrowserView, MobileView } from "react-device-detect";
 
 // Component
-import LoginDesktop from "./components/logingDesktop";
-import LoginMobile from "./components/logingMobile";
+import LoginDesktop from "./components/loginDesktop";
+import LoginMobile from "./components/loginMobile";
 
 const Login = () => {
   const [isClient, setIsClient] = useState(false);
