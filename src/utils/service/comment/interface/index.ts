@@ -9,9 +9,9 @@ export interface IRespCommentDetail {
 }
 
 export interface IReqCreateComment {
-  userId: string;
-  postId: string;
-  content: string;
+  userId: string | null;
+  postId: string | string[];
+  content: string | undefined;
 }
 
 export type IRespComment = IRespData<IRespCommentDetail>;
