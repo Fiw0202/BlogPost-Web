@@ -59,7 +59,7 @@ const SearchSection = () => {
   return (
     <>
       <Grid container>
-        <Grid p={2} item xs={12} md={8} lg={2}>
+        <Grid p={2} item xs={12} md={8} lg={8}>
           <TextField
             fullWidth
             placeholder="Search"
@@ -110,6 +110,9 @@ const SearchSection = () => {
               bgcolor: theme.palette.primary.dark,
               color: theme.palette.primary.contrastText,
               height: "100%",
+              "&:hover": {
+                backgroundColor: theme.palette.primary.main,
+              },
             }}
           >
             <Typography>Create +</Typography>
