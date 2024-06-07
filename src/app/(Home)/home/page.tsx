@@ -27,6 +27,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const Group = [
+  { value: "", label: "None" },
   { value: "History", label: "History" },
   { value: "Food", label: "Food" },
   { value: "Pets", label: "Pets" },
@@ -40,6 +41,8 @@ const HomePage = () => {
   const userId =
     typeof localStorage !== "undefined" ? localStorage.getItem("userId") : null;
   const [data, setData] = useState<IRespPostData[]>();
+  const [searchText, setSearchText] = useState<string>("");
+  const [selected, setSelected] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const [dialogOn, setDialogOn] = useState(false);
@@ -78,6 +81,16 @@ const HomePage = () => {
     }
   };
 
+  const filteredData = data?.filter((post) => {
+    const searchTextMatch =
+      post.subject.toLowerCase().includes(searchText.toLowerCase()) ||
+      post.content.toLowerCase().includes(searchText.toLowerCase());
+
+    const groupMatch = selected === "" || post.groupPost === selected;
+
+    return searchTextMatch && groupMatch;
+  });
+
   useEffect(() => {
     getPost();
   }, []);
@@ -97,6 +110,8 @@ const HomePage = () => {
             <TextField
               fullWidth
               placeholder="Search"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <IconButton aria-label="search">
@@ -121,14 +136,12 @@ const HomePage = () => {
           </Grid>
           <Grid p={2} item xs={12} md={2} lg={2}>
             <FormControl fullWidth>
-              <InputLabel id="select-group">Community</InputLabel>
+              <InputLabel id="search-select-group">Community</InputLabel>
               <Select
-                id="select-group"
-                value={formik.values.groupPost}
+                id="search-select-group"
+                value={selected}
                 label="Community"
-                onChange={(e) =>
-                  formik.setFieldValue("groupPost", e.target.value)
-                }
+                onChange={(e) => setSelected(e.target.value)}
                 sx={{ backgroundColor: "white" }}
               >
                 {Group.map((m) => (
@@ -157,7 +170,7 @@ const HomePage = () => {
           </Grid>
         </Grid>
 
-        <CardPost data={data} />
+        <CardPost data={filteredData} />
       </Stack>
 
       {/*==== Dialog ==== */}
