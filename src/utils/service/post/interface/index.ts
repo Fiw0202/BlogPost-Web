@@ -11,7 +11,7 @@ export interface IRespPostData {
 }
 
 export interface IReqCreatePost {
-  userId: string;
+  userId: string | null;
   subject: string;
   content: string;
   groupPost: string;
