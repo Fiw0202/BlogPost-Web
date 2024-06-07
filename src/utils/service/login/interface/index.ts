@@ -1,32 +1,15 @@
-export interface IRespMeData {
+import { IRespData, IResult } from "../../interface";
+export interface IUserDetails {
   id: string;
   userName: string;
   firstName: string;
   lastName: string;
   displayName: string;
 }
-
-export interface IRespMe {
-  result: IRespMeData;
-  statusCode: number;
-  statusText: string;
-}
-
-export interface IRespMeStatus {
-  data: IRespMe;
-}
-
-export interface IRespLoginData {
+export interface ILoginDetails {
   userId: string;
   token: string;
 }
 
-export interface IRespLogin {
-  result: IRespLoginData;
-  statusCode: number;
-  statusText: string;
-}
-
-export interface IRespLoginStatus {
-  data: IRespLogin;
-}
+export type IRespMe = IRespData<IUserDetails>;
+export type IRespLogin = IRespData<ILoginDetails>;
