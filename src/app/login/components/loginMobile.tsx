@@ -24,10 +24,12 @@ import { login } from "@/utils/service/login";
 const LoginMobile = () => {
   const router = useRouter();
   const [userName, setUserName] = useState<string>("");
+  const [validate, setValidate] = useState<boolean>(false);
   const [snackBarOn, setSnackbarOn] = useState<boolean>(false);
   const [alertMsg, setAlertMsg] = useState<string>("");
 
   const Login = async () => {
+    setValidate(true);
     try {
       const resp = await login(userName);
       if (resp.statusCode === 200) {
@@ -103,6 +105,8 @@ const LoginMobile = () => {
                 size="small"
                 sx={{
                   maxWidth: 500,
+                  border:
+                    validate && userName === "" ? "1px solid red" : "none",
                   "& .MuiFilledInput-root": {
                     backgroundColor: "white",
                     "&:focus-within": {
@@ -116,6 +120,11 @@ const LoginMobile = () => {
                 }}
                 onChange={(e) => setUserName(e.target.value)}
               />
+              {validate && userName === "" ? (
+                <Typography color="red" mt={1}>
+                  Please input your username!
+                </Typography>
+              ) : null}
             </Grid>
             <Grid item xs={12}>
               <Button
