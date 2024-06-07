@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IReqCreateComment, IRespComment, IRespCommentPost } from "./interface";
 
-export const getCommentByPostId = async (id: string) => {
+export const getCommentByPostId = async (id: string | string[]) => {
   try {
     const resp = await axios.get<unknown, IRespCommentPost>(
       `http://localhost:4000/comment/post/${id}`
