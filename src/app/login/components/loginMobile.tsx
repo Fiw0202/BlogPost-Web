@@ -37,7 +37,7 @@ const LoginMobile = () => {
         localStorage.setItem("token", resp.result.token);
         setAlertMsg("Success");
         setSnackbarOn(true);
-        router.push("/");
+        router.push("/home");
       } else {
         setAlertMsg(resp.statusText);
         setSnackbarOn(true);
