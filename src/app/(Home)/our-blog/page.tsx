@@ -19,17 +19,19 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { IconSearch } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Group } from "../Mockup/group";
 import { createPost, getPostByUserId } from "@/utils/service/post";
 import { IRespPostData } from "@/utils/service/post/interface";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import CardPost from "./components/cardPost";
+import { userContext } from "@/utils/context/usercontext";
 
 const OurBlogPage = () => {
   const userId =
     typeof localStorage !== "undefined" ? localStorage.getItem("userId") : null;
+  const user = useContext(userContext);
   const [data, setData] = useState<IRespPostData[]>();
   const [searchText, setSearchText] = useState<string>("");
   const [selected, setSelected] = useState<string>("");
@@ -84,82 +86,91 @@ const OurBlogPage = () => {
 
   return (
     <>
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-      <Stack spacing={2} direction={"column"}>
-        {/* <SearchSection /> */}
+      {user ? (
+        <>
+          {" "}
+          <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+          <Stack spacing={2} direction={"column"}>
+            {/* <SearchSection /> */}
 
-        <Grid container>
-          <Grid p={2} item xs={12} md={8} lg={8}>
-            <TextField
-              fullWidth
-              placeholder="Search"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <IconButton aria-label="search">
-                    <IconSearch />
-                  </IconButton>
-                ),
-              }}
-              sx={{
-                backgroundColor: theme.palette.primary.contrastText,
-                "& .MuiFilledInput-root": {
-                  backgroundColor: "white",
-                  "&:focus-within": {
-                    backgroundColor: "white",
-                  },
-                },
-                "&:hover": {
-                  backgroundColor: "white",
-                  color: theme.palette.primary.contrastText,
-                },
-              }}
-            />
-          </Grid>
-          <Grid p={2} item xs={12} md={2} lg={2}>
-            <FormControl fullWidth>
-              <InputLabel id="search-select-group">Community</InputLabel>
-              <Select
-                id="search-select-group"
-                value={selected}
-                label="Community"
-                onChange={(e) => setSelected(e.target.value)}
-                sx={{ backgroundColor: "white" }}
-              >
-                {Group.map((m) => (
-                  <MenuItem key={m.label} value={m.value}>
-                    {m.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid p={2} item xs={12} md={2} lg={2}>
-            <Button
-              fullWidth
-              onClick={() => setDialogOn(true)}
-              sx={{
-                bgcolor: theme.palette.primary.dark,
-                color: theme.palette.primary.contrastText,
-                height: "100%",
-                "&:hover": {
-                  backgroundColor: theme.palette.primary.main,
-                },
-              }}
-            >
-              <Typography>Create +</Typography>
-            </Button>
-          </Grid>
-        </Grid>
+            <Grid container>
+              <Grid p={2} item xs={12} md={8} lg={8}>
+                <TextField
+                  fullWidth
+                  placeholder="Search"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <IconButton aria-label="search">
+                        <IconSearch />
+                      </IconButton>
+                    ),
+                  }}
+                  sx={{
+                    backgroundColor: theme.palette.primary.contrastText,
+                    "& .MuiFilledInput-root": {
+                      backgroundColor: "white",
+                      "&:focus-within": {
+                        backgroundColor: "white",
+                      },
+                    },
+                    "&:hover": {
+                      backgroundColor: "white",
+                      color: theme.palette.primary.contrastText,
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid p={2} item xs={12} md={2} lg={2}>
+                <FormControl fullWidth>
+                  <InputLabel id="search-select-group">Community</InputLabel>
+                  <Select
+                    id="search-select-group"
+                    value={selected}
+                    label="Community"
+                    onChange={(e) => setSelected(e.target.value)}
+                    sx={{ backgroundColor: "white" }}
+                  >
+                    {Group.map((m) => (
+                      <MenuItem key={m.label} value={m.value}>
+                        {m.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid p={2} item xs={12} md={2} lg={2}>
+                <Button
+                  fullWidth
+                  onClick={() => setDialogOn(true)}
+                  sx={{
+                    bgcolor: theme.palette.primary.dark,
+                    color: theme.palette.primary.contrastText,
+                    height: "100%",
+                    "&:hover": {
+                      backgroundColor: theme.palette.primary.main,
+                    },
+                  }}
+                >
+                  <Typography>Create +</Typography>
+                </Button>
+              </Grid>
+            </Grid>
 
-        <CardPost data={filteredData} />
-      </Stack>
+            <CardPost data={filteredData} />
+          </Stack>
+        </>
+      ) : (
+        <Box sx={{ width: 200, height: 200 }}>
+          <Typography>กรุณา Login ก่อน!!! (หน้านี้อยู่ในช่วงพัฒนา)</Typography>
+        </Box>
+      )}
 
       {/*==== Dialog ==== */}
       <Dialog onClose={() => setDialogOn(false)} open={dialogOn}>
