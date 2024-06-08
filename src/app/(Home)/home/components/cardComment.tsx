@@ -1,5 +1,6 @@
 "use client";
 
+import { userContext } from "@/utils/context/usercontext";
 import { GetAvatarText } from "@/utils/function/avatarText";
 import { createComment, getCommentByPostId } from "@/utils/service/comment";
 import { IRespCommentDetail } from "@/utils/service/comment/interface";
@@ -7,6 +8,7 @@ import { getPostById } from "@/utils/service/post";
 import { IRespPostData } from "@/utils/service/post/interface";
 import theme from "@/utils/theme";
 import {
+  Alert,
   Avatar,
   Backdrop,
   Box,
@@ -19,6 +21,7 @@ import {
   CircularProgress,
   Grid,
   IconButton,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -26,13 +29,14 @@ import { IconMessage } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const CardComment = () => {
   dayjs.extend(relativeTime);
   const params = useParams();
   const userId =
     typeof localStorage !== "undefined" ? localStorage.getItem("userId") : null;
+  const user = useContext(userContext);
   const [loading, setLoading] = useState<boolean>(false);
   const [commentData, setCommentData] = useState<IRespCommentDetail[]>();
   const [commentCount, setCommentCount] = useState<number>();
@@ -40,6 +44,7 @@ const CardComment = () => {
   const [postData, setPostData] = useState<IRespPostData>();
   const [isComment, setIsComment] = useState<boolean>(false);
   const [validateComment, setValidateComment] = useState<boolean>(false);
+  const [alertOn, setAlertOn] = useState<boolean>(false);
 
   const getPost = async () => {
     try {
@@ -138,14 +143,23 @@ const CardComment = () => {
                 </IconButton>
               </Grid>
               <Grid item alignContent={"center"}>
-                <Typography variant="subtitle2">{`${commentCount} comments`}</Typography>
+                <Typography variant="subtitle2">{`${
+                  commentCount ? commentCount : 0
+                } comments`}</Typography>
               </Grid>
             </Grid>
           </CardActions>
           {!isComment ? (
             <Button
               variant="outlined"
-              onClick={() => setIsComment(true)}
+              onClick={() => {
+                if (!user) {
+                  setIsComment(false);
+                  setAlertOn(true);
+                } else {
+                  setIsComment(true);
+                }
+              }}
               sx={{
                 margin: 3,
                 border: `2px solid ${theme.palette.success.main}`,
@@ -250,6 +264,17 @@ const CardComment = () => {
           </Card>
         ))}
       </Box>
+
+      {/*==== Alert ==== */}
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={alertOn}
+        onClose={() => setAlertOn(false)}
+      >
+        <Alert variant="filled" severity="error">
+          Please Login!!!
+        </Alert>
+      </Snackbar>
     </>
   );
 };
