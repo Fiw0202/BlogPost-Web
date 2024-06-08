@@ -28,9 +28,9 @@ export const getPostById = async (id: string | string[]) => {
   }
 };
 
-export const getPostByUserId = async (id: string) => {
+export const getPostByUserId = async (id: string | string[] | null) => {
   try {
-    const req = await axios.get<unknown, IRespPost>(
+    const req = await axios.get<unknown, IRespAllPost>(
       `http://localhost:4000/master-post/user/${id}`
     );
     return req.data;
