@@ -15,8 +15,8 @@ const Sidebar = ({
   onSidebarClose,
   isSidebarOpen,
 }: ItemType) => {
-  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
-
+  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("xl"));
+  
   const sidebarWidth = "240px";
 
   if (lgUp) {

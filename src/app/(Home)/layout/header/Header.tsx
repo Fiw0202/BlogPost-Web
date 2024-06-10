@@ -7,8 +7,8 @@ import {
   Stack,
   IconButton,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
-import PropTypes from "prop-types";
 
 // components
 import Profile from "./Profile";
@@ -36,6 +36,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
     width: "100%",
     color: theme.palette.text.secondary,
   }));
+  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("xl"));
 
   return (
     <AppBarStyled position="sticky" color="default">
@@ -47,38 +48,23 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
           a Board
         </Typography>
         <Stack direction="row" alignItems="center">
-          <IconButton
-            color="inherit"
-            aria-label="menu"
-            onClick={toggleMobileSidebar}
-            sx={{
-              display: {
-                xs: "inline",
-                sm: "inline",
-                md: "none",
-                lg: "none",
-              },
-            }}
-          >
-            <IconMenu2
-              width="20"
-              height="20"
-              color={theme.palette.common.white}
-            />
-          </IconButton>
-
-          <Box
-            sx={{
-              display: {
-                xs: "none",
-                sm: "none",
-                md: "block",
-                lg: "block",
-              },
-            }}
-          >
-            <Profile />
-          </Box>
+          {!lgUp ? (
+            <IconButton
+              color="inherit"
+              aria-label="menu"
+              onClick={toggleMobileSidebar}
+            >
+              <IconMenu2
+                width="20"
+                height="20"
+                color={theme.palette.common.white}
+              />
+            </IconButton>
+          ) : (
+            <Box>
+              <Profile />
+            </Box>
+          )}
         </Stack>
       </ToolbarStyled>
     </AppBarStyled>
