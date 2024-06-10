@@ -6,8 +6,8 @@ export interface IRespPostData {
   subject: string;
   content: string;
   groupPost: string;
-  createName: string;
-  createDate: string;
+  createName?: string;
+  createDate?: string;
 }
 
 export interface IReqCreatePost {
@@ -19,7 +19,7 @@ export interface IReqCreatePost {
 
 export interface IReqUpdatePost {
   _id: string;
-  userId: string;
+  userId: string | null;
   subject: string;
   content: string;
   groupPost: string;
