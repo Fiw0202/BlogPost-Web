@@ -15,7 +15,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { IconMessage } from "@tabler/icons-react";
+import { IconEdit, IconMessage, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -49,6 +49,16 @@ const CardPost = ({ data }: TCardProps) => {
             }
             title={m?.createName}
             subheader={dayjs(new Date()).to(m?.createDate, true)}
+            action={
+              <>
+                <IconButton aria-label="Edit">
+                  <IconEdit />
+                </IconButton>
+                <IconButton aria-label="Delete">
+                  <IconTrash />
+                </IconButton>
+              </>
+            }
           />
           <Box paddingLeft="30px">
             <Chip label={m?.groupPost} />
