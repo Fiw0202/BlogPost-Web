@@ -42,8 +42,10 @@ const OurBlogPage = () => {
     setLoading(true);
     try {
       const resp = await getPostByUserId(userId);
-      setData(resp.result);
-      setLoading(false);
+      setTimeout(() => {
+        setData(resp.result);
+        setLoading(false);
+      }, 1500);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -163,7 +165,7 @@ const OurBlogPage = () => {
               </Grid>
             </Grid>
 
-            <CardPost data={filteredData} />
+            <CardPost data={filteredData} getMyPost={getMyPost} />
           </Stack>
         </>
       ) : (
