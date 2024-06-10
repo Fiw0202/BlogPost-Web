@@ -62,3 +62,14 @@ export const updatePost = async (req: IReqUpdatePost) => {
     throw error;
   }
 };
+
+export const deletePostById = async (id: string) => {
+  try {
+    const resp = await axios.delete<unknown, IRespPost>(
+      `http://localhost:4000/master-post/${id}`
+    );
+    return resp.data;
+  } catch (error) {
+    throw error;
+  }
+};
