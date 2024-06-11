@@ -62,6 +62,8 @@ const CardPost = ({ data, getMyPost }: TCardProps) => {
     content: "",
   });
   const [alertDelete, setAlertDelete] = useState<boolean>(false);
+  const [commonAlertOn, setCommonAlertOn] = useState<boolean>(false);
+  const [commonAlertText, setCommonAlertText] = useState<any>();
 
   const getPostId = async (id: string) => {
     try {
@@ -88,9 +90,12 @@ const CardPost = ({ data, getMyPost }: TCardProps) => {
         setAlertDelete(true);
         setDialogDeleteOn(false);
       }
+      setCommonAlertText(resp.result);
+      setCommonAlertOn(true);
       getMyPost();
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      setCommonAlertOn(true);
     }
   };
 
@@ -318,6 +323,20 @@ const CardPost = ({ data, getMyPost }: TCardProps) => {
           </form>
         </Box>
       </Dialog>
+
+      <Snackbar
+        open={commonAlertOn}
+        autoHideDuration={3000}
+        onClose={() => setCommonAlertOn(false)}
+      >
+        <Alert
+          severity="error"
+          variant="filled"
+          onClose={() => setCommonAlertOn(false)}
+        >
+          {commonAlertText}
+        </Alert>
+      </Snackbar>
 
       {/*==== Alert Delete====*/}
 
