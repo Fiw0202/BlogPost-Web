@@ -6,11 +6,11 @@
 
 <h4>1. PLese Install Package use "npm install" command</h4>
 <ul>
-  <li>Material UI is used for displaying various website components and CSS-like designs.<li>
-  <li>Axios library is a simple promise based HTTP client.<li>
-  <li>dayJs displays dates or times.<li>
-  <li>Formik for control value input.<li>
-  <li>React device detect for detect device mobile and desktop<li>
+  <li>Material UI is used for displaying various website components and CSS-like designs.</li>
+  <li>Axios library is a simple promise based HTTP client.</li>
+  <li>dayJs displays dates or times.</li>
+  <li>Formik for control value input.</li>
+  <li>React device detect for detect device mobile and desktop</li>
 </ul>
 
 <h4>2. Please create user on OpenAPI Swagger before post or comment.</h4>
