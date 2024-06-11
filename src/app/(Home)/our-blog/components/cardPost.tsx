@@ -13,6 +13,9 @@ import {
   CardHeader,
   Chip,
   Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
   DialogTitle,
   FormControl,
   Grid,
@@ -24,6 +27,7 @@ import {
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { IconPencilMinus, IconTrash } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
@@ -45,9 +49,11 @@ const CardPost = ({ data, getMyPost }: TCardProps) => {
   const router = useRouter();
   const userId =
     typeof localStorage !== "undefined" ? localStorage.getItem("userId") : null;
+  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"));
 
   const [getIdPost, setGetIdPost] = useState<string>("");
   const [dialogEditOn, setDialogEditOn] = useState<boolean>(false);
+  const [dialogDeleteOn, setDialogDeleteOn] = useState<boolean>(false);
   const [dataForEdit, setDataForEdit] = useState<IRespPostData>({
     _id: getIdPost,
     userId: userId || "",
@@ -80,6 +86,7 @@ const CardPost = ({ data, getMyPost }: TCardProps) => {
       const resp = await deletePostById(id);
       if (resp.statusCode === 200) {
         setAlertDelete(true);
+        setDialogDeleteOn(false);
       }
       getMyPost();
     } catch (error) {
@@ -144,7 +151,8 @@ const CardPost = ({ data, getMyPost }: TCardProps) => {
                   aria-label="Delete"
                   color="success"
                   onClick={() => {
-                    deletePost(m._id);
+                    setGetIdPost(m._id);
+                    setDialogDeleteOn(true);
                   }}
                 >
                   <IconTrash />
@@ -312,6 +320,50 @@ const CardPost = ({ data, getMyPost }: TCardProps) => {
       </Dialog>
 
       {/*==== Alert Delete====*/}
+
+      <Dialog onClose={() => setDialogDeleteOn(false)} open={dialogDeleteOn}>
+        <DialogTitle textAlign={"center"}>
+          <Typography variant="h2">
+            Please confirm if you wish to delete the post
+          </Typography>
+        </DialogTitle>
+        <DialogContent sx={{ textAlign: "center" }}>
+          <DialogContentText>
+            Are you sure you want to delete the post?
+          </DialogContentText>
+          <DialogContentText>
+            Once deleted, it cannot be recovery
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Grid
+            container
+            spacing={1}
+            direction={lgUp ? "row" : "column-reverse"}
+            sx={{ display: "flex", justifyContent: "center", alignContent: "" }}
+          >
+            <Grid item xs={12} md={6} lg={6} textAlign={"center"}>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={() => setDialogDeleteOn(false)}
+              >
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6} textAlign={"center"}>
+              <Button
+                fullWidth
+                variant="contained"
+                color="error"
+                onClick={() => deletePost(getIdPost)}
+              >
+                Delete
+              </Button>
+            </Grid>
+          </Grid>
+        </DialogActions>
+      </Dialog>
 
       <Snackbar
         open={alertDelete}
