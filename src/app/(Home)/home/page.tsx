@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Alert,
   Backdrop,
   Box,
   Button,
@@ -13,12 +14,13 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Snackbar,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import CardPost from "./components/cardPost";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IRespPostData } from "@/utils/service/post/interface";
 import { createPost, getAllPost } from "@/utils/service/post";
 import theme from "@/utils/theme";
@@ -26,16 +28,19 @@ import { IconSearch } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Group } from "../Mockup/group";
+import { userContext } from "@/utils/context/usercontext";
 
 const HomePage = () => {
   const userId =
     typeof localStorage !== "undefined" ? localStorage.getItem("userId") : null;
+  const user = useContext(userContext);
   const [data, setData] = useState<IRespPostData[]>();
   const [searchText, setSearchText] = useState<string>("");
   const [selected, setSelected] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const [dialogOn, setDialogOn] = useState(false);
+  const [alertOn, setAlertOn] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -145,7 +150,9 @@ const HomePage = () => {
           <Grid p={2} item xs={12} md={2} lg={2}>
             <Button
               fullWidth
-              onClick={() => setDialogOn(true)}
+              onClick={() => {
+                user ? setDialogOn(true) : setAlertOn(true);
+              }}
               sx={{
                 bgcolor: theme.palette.primary.dark,
                 color: theme.palette.primary.contrastText,
@@ -295,6 +302,17 @@ const HomePage = () => {
           </form>
         </Box>
       </Dialog>
+
+      {/*==== Alert ==== */}
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={alertOn}
+        onClose={() => setAlertOn(false)}
+      >
+        <Alert variant="filled" severity="error">
+          Please Login!!!
+        </Alert>
+      </Snackbar>
     </>
   );
 };
