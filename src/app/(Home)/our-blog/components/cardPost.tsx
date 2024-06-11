@@ -89,9 +89,11 @@ const CardPost = ({ data, getMyPost }: TCardProps) => {
       if (resp.statusCode === 200) {
         setAlertDelete(true);
         setDialogDeleteOn(false);
+      } else {
+        setCommonAlertText(resp.result);
+        setCommonAlertOn(true);
       }
-      setCommonAlertText(resp.result);
-      setCommonAlertOn(true);
+
       getMyPost();
     } catch (error: any) {
       console.log(error);
